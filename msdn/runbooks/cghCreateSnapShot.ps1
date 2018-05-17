@@ -1,4 +1,5 @@
 Param(
+[Parameter(Mandatory=$true)][string]$SubscriptionID,
 [Parameter(Mandatory=$true)][string]$StorageAccountName,
 [Parameter(Mandatory=$true)][string]$StorageAccountRG,
 [Parameter(Mandatory=$true)][string]$ContainerName,
@@ -29,13 +30,17 @@ catch {
     }
 }
 
-$StorageAccountKey = (Get-AzureStorageKey -StorageAccountName $StorageAccountName).Primary
+Set-AzureRmContext -SubscriptionId $SubscriptionID
 
+$StorageAccKeys =  Get-AzureRmStorageAccountKey -ResourceGroupName $StorageAccountRG -Name $StorageAccountName
 
- $Ctx = New-AzureStorageContext -StorageAccountName $StorageAccountName -StorageAccountKey $StorageAccountKey
+$StorageAccountKey = $StorageAccKeys[0].value
 
- $blob = Get-AzureStorageBlob -Context $Ctx -Container $ContainerName -Blob $BlobName 
+$Ctx = New-AzureStorageContext -StorageAccountName $StorageAccountName -StorageAccountKey $StorageAccountKey
 
- $snap = $blob.ICloudBlob.CreateSnapshot()
+$blob = Get-AzureStorageBlob -Context $Ctx -Container $ContainerName -Blob $BlobName 
 
- Get-AzureStorageBlob –Context $Ctx -Prefix $BlobName -Container $ContainerName| where-Object {$_.ICloudBlob.IsSnapshot -and $_.Name -eq $BlobName -and $_.SnapshotTime -ne $null } | Format-table -autosize -wrap
+$snap = $blob.ICloudBlob.CreateSnapshot()
+
+"SnapShots:"
+Get-AzureStorageBlob –Context $Ctx -Prefix $BlobName -Container $ContainerName| where-Object {$_.ICloudBlob.IsSnapshot -and $_.Name -eq $BlobName -and $_.SnapshotTime -ne $null } | Format-table -autosize -wrap
