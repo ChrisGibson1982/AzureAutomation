@@ -41,6 +41,6 @@ $Ctx = New-AzureStorageContext -StorageAccountName $StorageAccountName -StorageA
 $blob = Get-AzureStorageBlob -Context $Ctx -Container $ContainerName -Blob $BlobName 
 
 $snap = $blob.ICloudBlob.CreateSnapshot()
+$snap.SnapshotQualifiedUri
 
-"SnapShots:"
-Get-AzureStorageBlob –Context $Ctx -Prefix $BlobName -Container $ContainerName| where-Object {$_.ICloudBlob.IsSnapshot -and $_.Name -eq $BlobName -and $_.SnapshotTime -ne $null } | Format-table -autosize -wrap
+# Get-AzureStorageBlob –Context $Ctx -Prefix $BlobName -Container $ContainerName| where-Object {$_.ICloudBlob.IsSnapshot -and $_.Name -eq $BlobName -and $_.SnapshotTime -ne $null } | Format-table -autosize -wrap
