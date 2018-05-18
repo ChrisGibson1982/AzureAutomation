@@ -4,8 +4,8 @@
 
 Param(
 [Parameter(Mandatory=$true)][string]$SubscriptionID,
-[Parameter(Mandatory=$true)][string]$StorageAccountName,
 [Parameter(Mandatory=$true)][string]$StorageAccountRG,
+[Parameter(Mandatory=$true)][string]$StorageAccountName,
 [Parameter(Mandatory=$true)][string]$ContainerName,
 [Parameter(Mandatory=$true)][string]$BlobName
 )
