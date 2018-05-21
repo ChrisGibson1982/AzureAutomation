@@ -1,4 +1,4 @@
-## Created By: Chris Gibson
+# Created By: Chris Gibson
 ## Date: 17/05/2018
 
 
@@ -22,7 +22,20 @@ try
         -TenantId $servicePrincipalConnection.TenantId `
         -ApplicationId $servicePrincipalConnection.ApplicationId `
         -CertificateThumbprint $servicePrincipalConnection.CertificateThumbprint 
-}
+
+        Set-AzureRmContext -SubscriptionId $SubscriptionID
+
+        $StorageAccKeys =  Get-AzureRmStorageAccountKey -ResourceGroupName $StorageAccountRG -Name $StorageAccountName
+        
+        $StorageAccountKey = $StorageAccKeys[0].value
+        
+        $Ctx = New-AzureStorageContext -StorageAccountName $StorageAccountName -StorageAccountKey $StorageAccountKey
+        
+        $blob = Get-AzureStorageBlob -Context $Ctx -Container $ContainerName -Blob $BlobName 
+        
+        $snap = $blob.ICloudBlob.CreateSnapshot()
+
+    }
 catch {
     if (!$servicePrincipalConnection)
     {
@@ -34,17 +47,6 @@ catch {
     }
 }
 
-Set-AzureRmContext -SubscriptionId $SubscriptionID
 
-$StorageAccKeys =  Get-AzureRmStorageAccountKey -ResourceGroupName $StorageAccountRG -Name $StorageAccountName
-
-$StorageAccountKey = $StorageAccKeys[0].value
-
-$Ctx = New-AzureStorageContext -StorageAccountName $StorageAccountName -StorageAccountKey $StorageAccountKey
-
-$blob = Get-AzureStorageBlob -Context $Ctx -Container $ContainerName -Blob $BlobName 
-
-$snap = $blob.ICloudBlob.CreateSnapshot()
-$snap
 
 # Get-AzureStorageBlob –Context $Ctx -Prefix $BlobName -Container $ContainerName| where-Object {$_.ICloudBlob.IsSnapshot -and $_.Name -eq $BlobName -and $_.SnapshotTime -ne $null } | Format-table -autosize -wrap
