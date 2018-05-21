@@ -23,19 +23,25 @@ try
         -ApplicationId $servicePrincipalConnection.ApplicationId `
         -CertificateThumbprint $servicePrincipalConnection.CertificateThumbprint 
 
-        Set-AzureRmContext -SubscriptionId $SubscriptionID
+    "Setting Subscription"
+    Set-AzureRmContext -SubscriptionId $SubscriptionID
 
-        $StorageAccKeys =  Get-AzureRmStorageAccountKey -ResourceGroupName $StorageAccountRG -Name $StorageAccountName
-        
-        $StorageAccountKey = $StorageAccKeys[0].value
-        
-        $Ctx = New-AzureStorageContext -StorageAccountName $StorageAccountName -StorageAccountKey $StorageAccountKey
-        
-        $blob = Get-AzureStorageBlob -Context $Ctx -Container $ContainerName -Blob $BlobName 
-        
-        $snap = $blob.ICloudBlob.CreateSnapshot()
+    "Getting the account storage keys"
+    $StorageAccKeys =  Get-AzureRmStorageAccountKey -ResourceGroupName $StorageAccountRG -Name $StorageAccountName
 
-    }
+    "Select the primary key"    
+    $StorageAccountKey = $StorageAccKeys[0].value
+
+    "Setting the storage context"    
+    $Ctx = New-AzureStorageContext -StorageAccountName $StorageAccountName -StorageAccountKey $StorageAccountKey
+
+    "Getting the blob"    
+    $blob = Get-AzureStorageBlob -Context $Ctx -Container $ContainerName -Blob $BlobName 
+
+    "Taking the snapshot"    
+    $snap = $blob.ICloudBlob.CreateSnapshot()
+
+}
 catch {
     if (!$servicePrincipalConnection)
     {
