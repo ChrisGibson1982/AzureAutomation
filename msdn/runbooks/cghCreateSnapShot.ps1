@@ -16,31 +16,31 @@ try
     # Get the connection "AzureRunAsConnection "
     $servicePrincipalConnection=Get-AutomationConnection -Name $connectionName         
 
-    "Logging in to Azure..."
+    write-verbose -Message "Logging in to Azure..."
     Add-AzureRmAccount `
         -ServicePrincipal `
         -TenantId $servicePrincipalConnection.TenantId `
         -ApplicationId $servicePrincipalConnection.ApplicationId `
         -CertificateThumbprint $servicePrincipalConnection.CertificateThumbprint 
 
-    "Setting Subscription"
+    write-verbose -Message "Setting Subscription"
     Set-AzureRmContext -SubscriptionId $SubscriptionID
 
-    "Getting the account storage keys"
+    write-verbose -Message "Getting the account storage keys"
     $StorageAccKeys =  Get-AzureRmStorageAccountKey -ResourceGroupName $StorageAccountRG -Name $StorageAccountName
 
-    "Select the primary key"    
+    write-verbose -Message "Select the primary key"    
     $StorageAccountKey = $StorageAccKeys[0].value
 
-    "Setting the storage context"    
+    write-verbose -Message "Setting the storage context"    
     $Ctx = New-AzureStorageContext -StorageAccountName $StorageAccountName -StorageAccountKey $StorageAccountKey
 
-    "Getting the blob"    
+    write-verbose -Message "Getting the blob"    
     $blob = Get-AzureStorageBlob -Context $Ctx -Container $ContainerName -Blob $BlobName 
 
-    "Taking the snapshot"    
-    $snap = $blob.ICloudBlob.CreateSnapshot()
-
+    write-verbose -Message "Taking the snapshot"    
+    $snap = $blob.ICloudBlob.CreateSnapshot() 
+    if ($snap) { "SnapShot taken" }
 }
 catch {
     if (!$servicePrincipalConnection)
