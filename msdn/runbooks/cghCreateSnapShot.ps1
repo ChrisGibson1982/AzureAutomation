@@ -10,6 +10,13 @@ Param(
 [Parameter(Mandatory=$true)][string]$BlobName
 )
 
+$SubscriptionID = $SubscriptionID.Trim()
+$StorageAccountRG= $StorageAccountRG.Trim()
+$StorageAccountName = $StorageAccountName.Trim()
+$ContainerName = $ContainerName.Trim()
+$BlobName = $BlobName.Trim()
+
+
 $connectionName = "AzureRunAsConnection"
 try
 {
