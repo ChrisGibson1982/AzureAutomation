@@ -31,6 +31,9 @@ function Start-AzureRMStorageSnapShotRB {
     )
     
     begin {
+        $ResourceGroup = $ResourceGroup.Trim()
+        $AutomationAccount = $AutomationAccount.Trim()
+        $Name = $Name.Trim()
     }
     
     process {
