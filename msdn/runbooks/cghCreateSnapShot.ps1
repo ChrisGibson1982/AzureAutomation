@@ -3,11 +3,11 @@
 
 
 Param(
-[Parameter(Mandatory=$true)][string]$SubscriptionID,
-[Parameter(Mandatory=$true)][string]$StorageAccountRG,
-[Parameter(Mandatory=$true)][string]$StorageAccountName,
-[Parameter(Mandatory=$true)][string]$ContainerName,
-[Parameter(Mandatory=$true)][string]$BlobName
+[Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$SubscriptionID,
+[Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$StorageAccountRG,
+[Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$StorageAccountName,
+[Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$ContainerName,
+[Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$BlobName
 )
 
 $SubscriptionID = $SubscriptionID.Trim()
