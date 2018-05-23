@@ -7,3 +7,5 @@ Azure Automation runbooks and scripts
 
 ### Scripts
 1. start-cghCreateSnapShot.ps1 - Starts an Azure Runbook and retrieves the output
+
+---
