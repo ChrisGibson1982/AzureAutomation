@@ -6,12 +6,13 @@ Short description
 Long description
 
 .EXAMPLE
-An example
+$Params = @{'SubscriptionID' = '81186e29-6917-590f-a95a-49d7e8e9eaa2';'StorageAccountRG' = 'cghStorageSnapTest';'StorageAccountName' = 'storageacc001';'ContainerName' = 'container001';'BlobName' = 'bluejpeg'}
+Start-AzRunBook -ResourceGroup 'AAResourceRG' -AutomationAccount 'AAutomation' -Name 'SnapShotRunBook' -Params $Params
 
 .NOTES
-General notes
+Starts AA Runbooks
 #>
-function Start-AzureRMStorageSnapShotRB {
+function Start-AzRunBook {
     [CmdletBinding()]
     param (
                 # Resource Group
