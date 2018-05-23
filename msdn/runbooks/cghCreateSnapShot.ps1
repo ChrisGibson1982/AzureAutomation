@@ -3,12 +3,19 @@
 
 
 Param(
-[Parameter(Mandatory=$true)][string]$SubscriptionID,
-[Parameter(Mandatory=$true)][string]$StorageAccountRG,
-[Parameter(Mandatory=$true)][string]$StorageAccountName,
-[Parameter(Mandatory=$true)][string]$ContainerName,
-[Parameter(Mandatory=$true)][string]$BlobName
+[Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$SubscriptionID,
+[Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$StorageAccountRG,
+[Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$StorageAccountName,
+[Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$ContainerName,
+[Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$BlobName
 )
+
+$SubscriptionID = $SubscriptionID.Trim()
+$StorageAccountRG= $StorageAccountRG.Trim()
+$StorageAccountName = $StorageAccountName.Trim()
+$ContainerName = $ContainerName.Trim()
+$BlobName = $BlobName.Trim()
+
 
 $connectionName = "AzureRunAsConnection"
 try
@@ -39,8 +46,8 @@ try
     $blob = Get-AzureStorageBlob -Context $Ctx -Container $ContainerName -Blob $BlobName 
 
     "Taking the snapshot"    
-    $snap = $blob.ICloudBlob.CreateSnapshot()
-
+    $snap = $blob.ICloudBlob.CreateSnapshot() 
+    if ($snap) { "SnapShot taken" }
 }
 catch {
     if (!$servicePrincipalConnection)
