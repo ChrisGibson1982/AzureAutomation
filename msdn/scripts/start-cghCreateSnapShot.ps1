@@ -44,7 +44,7 @@ function Start-AzRunBook {
     
     process {
 
-        $job = Start-AzureRmAutomationRunbook -ResourceGroupName $ResourceGroup –AutomationAccountName $AutomationAccount –Name $Name
+        $job = Start-AzureRmAutomationRunbook -ResourceGroupName $ResourceGroup –AutomationAccountName $AutomationAccount –Name $Name -Parameters $params
 
         $doLoop = $true
         While ($doLoop) {
