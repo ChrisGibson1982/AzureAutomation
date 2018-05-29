@@ -24,6 +24,11 @@ function Start-AzRunBook {
                 [Parameter(Mandatory=$true)]
                 [ValidateNotNullOrEmpty()]
                 $AutomationAccount,
+
+                # Automation Account
+                [Parameter(Mandatory=$true)]
+                [ValidateNotNullOrEmpty()]
+                $Params,
                 
                 # Name
                 [Parameter(Mandatory=$true)]
