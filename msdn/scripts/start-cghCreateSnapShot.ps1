@@ -44,24 +44,22 @@ function Start-AzRunBook {
     
     process {
 
-        $job = Start-AzureRmAutomationRunbook -ResourceGroupName "ResourceGroup" –AutomationAccountName "AutomationAccount" –Name "Test-Runbook"
+        $job = Start-AzureRmAutomationRunbook -ResourceGroupName $ResourceGroup –AutomationAccountName $AutomationAccount –Name $Name
 
         $doLoop = $true
         While ($doLoop) {
-          $job = Get-AzureRmAutomationJob -ResourceGroupName "ResourceGroup" –AutomationAccountName "AutomationAccount" -Id $job.JobId
+          $job = Get-AzureRmAutomationJob -ResourceGroupName $ResourceGroup –AutomationAccountName $AutomationAccount -Id $job.JobId
           $status = $job.Status
           $doLoop = (($status -ne "Completed") -and ($status -ne "Failed") -and ($status -ne "Suspended") -and ($status -ne "Stopped"))
         }
         
-        Get-AzureRmAutomationJobOutput -ResourceGroupName "ResourceGroup" –AutomationAccountName "AutomationAccount" -Id $job.JobId –Stream Output
+        Get-AzureRmAutomationJobOutput -ResourceGroupName $ResourceGroup –AutomationAccountName $AutomationAccount -Id $job.JobId –Stream Output
         
         # For more detailed job output, pipe the output of Get-AzureRmAutomationJobOutput to Get-AzureRmAutomationJobOutputRecord
-        Get-AzureRmAutomationJobOutput -ResourceGroupName "ResourceGroup" –AutomationAccountName "AutomationAccount" -Id $job.JobId –Stream Any | Get-AzureRmAutomationJobOutputRecord
+        Get-AzureRmAutomationJobOutput -ResourceGroupName $ResourceGroup –AutomationAccountName $AutomationAccount -Id $job.JobId –Stream Any | Get-AzureRmAutomationJobOutputRecord
     
     }
     
     end {
     }
 }
-
-
