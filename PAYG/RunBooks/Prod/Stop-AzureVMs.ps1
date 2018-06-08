@@ -8,11 +8,8 @@ This runbook connects to Azure and stops all VMs (ASM and ARM) in the specified 
 #>
 
 param (
-    [Parameter(Mandatory=$false)] 
-    [String]$AzureCredentialAssetName = 'AzureCred',
-	
-    [Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$SubscriptionID,
 
+    [Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$SubscriptionID
 )
 
 # Setting error and warning action preferences
