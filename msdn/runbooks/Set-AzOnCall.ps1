@@ -16,7 +16,7 @@ $countryCode = '44'
 $smsUser = $smsUser.Trim()
 $phoneNumber = $phoneNumber.Trim()
 $groupQuery = "*" + $actionGroupName + "*"
-}
+
 
 
 $connectionName = "AzureRunAsConnection"
