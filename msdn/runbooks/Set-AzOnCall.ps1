@@ -3,7 +3,6 @@
 # https://github.com/ChrisGibson1982/AzureAutomation
 
 
-
 Param(
 [Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$SubscriptionID,
 [Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$actionGroupName,
@@ -16,6 +15,8 @@ $actionGroupName = $actionGroupName.Trim()
 $countryCode = '44'
 $smsUser = $smsUser.Trim()
 $phoneNumber = $phoneNumber.Trim()
+$groupQuery = "*" + $actionGroupName + "*"
+}
 
 
 $connectionName = "AzureRunAsConnection"
@@ -34,7 +35,7 @@ try
     "Setting Subscription"
     Set-AzureRmContext -SubscriptionId $SubscriptionID
 
-    $Group = Get-AzureRmActionGroup
+    $Group = Get-AzureRmActionGroup| where {$_.name -like $query}
 
     $sms = New-AzureRmActionGroupReceiver -Name $smsUser -SmsReceiver -CountryCode $countryCode -PhoneNumber $phoneNumber
     
@@ -46,7 +47,7 @@ try
 catch {
     if (!$servicePrincipalConnection)
     {
-        $ErrorMessage = "Connection $connectionName not found."
+        $ErrorMessage = "Connection $connectionName was not found."
         throw $ErrorMessage
     } else{
         Write-Error -Message $_.Exception
