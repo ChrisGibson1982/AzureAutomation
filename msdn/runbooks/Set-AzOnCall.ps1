@@ -35,7 +35,7 @@ try
     "Setting Subscription"
     Set-AzureRmContext -SubscriptionId $SubscriptionID
 
-    $Group = Get-AzureRmActionGroup| where {$_.name -like $query}
+    $Group = Get-AzureRmActionGroup| where {$_.name -like $groupQuery}
 
     $sms = New-AzureRmActionGroupReceiver -Name $smsUser -SmsReceiver -CountryCode $countryCode -PhoneNumber $phoneNumber
     
